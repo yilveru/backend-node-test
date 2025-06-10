@@ -4,7 +4,6 @@
 
 Este template es el punto de partida para una prueba técnica de backend. El objetivo es implementar un endpoint `/characters` que busque personajes de Rick & Morty usando la API pública, persistiendo resultados en una base de datos local y agregando un sistema de caché en memoria.
 
-Este proyecto ha sido convertido completamente a TypeScript para mejorar la calidad del código, facilitar el mantenimiento y aprovechar las ventajas del tipado estático.
 
 ## Tecnologías utilizadas
 
@@ -37,7 +36,7 @@ Este proyecto ha sido convertido completamente a TypeScript para mejorar la cali
 
 1. Clona el repositorio:
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/homecu/backend-node-test-template.git
 cd backend-test-template
 ```
 
