@@ -10,8 +10,18 @@ import { Request, Response, NextFunction } from 'express';
  * 4. Log response status code and duration when the request completes
  */
 const requestLogger = (req: Request, res: Response, next: NextFunction): void => {
-  // TODO: Implement the logging middleware
-  console.log(`Request received: ${req.method} ${req.originalUrl}`);
+  const start = Date.now();
+
+  console.log(`➡️  ${req.method} ${req.originalUrl}`);
+
+  if (Object.keys(req.query).length > 0) {
+    console.log(`🔍 Query: ${JSON.stringify(req.query)}`);
+  }
+
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`✅ ${req.method} ${req.originalUrl} - ${res.statusCode} (${duration}ms)`);
+  });
   next();
 };
 
