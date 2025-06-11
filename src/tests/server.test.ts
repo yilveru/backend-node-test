@@ -11,10 +11,10 @@ describe('Server', () => {
     expect(response.body.endpoints).toHaveProperty('characters');
   });
   
-  test('Characters endpoint should return 501 Not Implemented initially', async () => {
-    const response = await request(app).get('/characters?name=rick');
+  // test('Characters endpoint should return 501 Not Implemented initially', async () => {
+  //   const response = await request(app).get('/characters?name=rick');
     
-    expect(response.statusCode).toBe(501);
-    expect(response.body).toHaveProperty('message', 'Not implemented yet');
-  });
+  //   expect(response.statusCode).toBe(501);
+  //   expect(response.body).toHaveProperty('message', 'Not implemented yet');
+  // });
 });

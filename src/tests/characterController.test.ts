@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { getCharacters } from '../controllers/characterController';
-import { fetchCharacterByName } from '../services/rickAndMortyApi';
+import { fetchCharacterByName, fetchCharacterFromDb } from '../services/rickAndMortyApi';
 import { Character } from '../db/models';
+import { characterCache } from '../services/cache';
 
 // Mock the dependencies
 jest.mock('../services/rickAndMortyApi');
@@ -22,6 +23,7 @@ describe('Character Controller', () => {
   beforeEach(() => {
     // Reset mocks
     jest.clearAllMocks();
+    characterCache.clear();
     
     // Mock request and response
     req = {
@@ -38,16 +40,16 @@ describe('Character Controller', () => {
     console.error = jest.fn();
   });
   
-  test('should return 501 Not Implemented initially', async () => {
-    await getCharacters(req as any, res as Response);
+  // test('should return 501 Not Implemented initially', async () => {
+  //   await getCharacters(req as any, res as Response);
     
-    expect(res.status).toHaveBeenCalledWith(501);
-    expect(res.json).toHaveBeenCalledWith({ message: 'Not implemented yet' });
-  });
+  //   expect(res.status).toHaveBeenCalledWith(501);
+  //   expect(res.json).toHaveBeenCalledWith({ message: 'Not implemented yet' });
+  // });
   
   // TODO: Uncomment and complete these tests as you implement the controller
 
-  /*
+  
   test('should return 400 if name is not provided', async () => {
     req.query = {};
     await getCharacters(req as any, res as Response);
@@ -61,11 +63,16 @@ describe('Character Controller', () => {
       { id: 1, name: 'Rick Sanchez', species: 'Human', gender: 'Male' }
     ];
     
-    (Character.findAll as jest.Mock).mockResolvedValue(mockCharacters);
+    (fetchCharacterFromDb as jest.Mock).mockResolvedValue(mockCharacters);
+    (fetchCharacterByName as jest.Mock).mockResolvedValue([]);
     
     await getCharacters(req as any, res as Response);
     
-    expect(Character.findAll).toHaveBeenCalled();
+    expect(fetchCharacterFromDb).toHaveBeenCalledWith({
+      name: 'Rick Sanchez',
+      species: 'Human',
+      gender: 'Male'
+    });
     expect(fetchCharacterByName).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(mockCharacters);
@@ -142,5 +149,5 @@ describe('Character Controller', () => {
     // fetchCharacterByName should only be called once
     expect(fetchCharacterByName).toHaveBeenCalledTimes(1);
   });
-  */
+  
 });
